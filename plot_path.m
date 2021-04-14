@@ -2,29 +2,35 @@
 
 function  plot_path (path_start,path_end,a_vec)
 
+%% make a continuous valid path
+path_end = [2.34,1.358]
 via_1=[-pi;0];
 
-wrap_12=[pi;0];
- figure(2)
- hold on
+wrap_12=[pi;0]; %% WHAT DO THESE MEAN WRAP_12 IS THE NEGATIVE VIA_1
+figure(2)
+hold on
+ 
+ %% MARKS THE START AND END POINTS
  plot(path_start(1),path_start(2),'g.',"markersize",50)
  plot(path_end(1),path_end(2),'g.',"markersize",50)
+ 
 
-dq_size=0.1
-dist1 = norm(path_start-via_1)%% WHAT IS THIS WEIRD METHOD
-dist2 = norm(wrap_12-path_end)
+dq_size=0.1;
+dist1 = norm(path_start - via_1);%% CALCULATING DISTANCE BETWEEN TWO POINTS
+ 
+dist2 = norm(wrap_12 - path_end)
 
   
   
-npts = round(dist1/dq_size)
-fignum=3
-figure(fignum)
+npts = round(dist1/dq_size); %% BREAKING A LINE SEGMENT INTO SMALLER UNITS
+fignum=3;
+figure(fignum);
 clf
 [obstacle_ctr_pts,obstacle_radii] = get_environment_model;
 plot_circles(obstacle_ctr_pts,obstacle_radii,fignum)
 fignum=3;
 figure(fignum)
-for i=0:npts
+for i=0:npts %% FOR EACH POINT ALONG THE ABOVE DISTANCE 
   figure(3)
 clf
 plot_circles(obstacle_ctr_pts,obstacle_radii,fignum)
@@ -47,7 +53,7 @@ pause
 end
   
 
-  
+dist2/dq_size
 npts = round(dist2/dq_size);
 
 for i=0:npts

@@ -1,7 +1,7 @@
 %start of program for C-space computation
 %compute safe/unsafe poses by looking at radii between points on robot links and
 %obstacles in the environment
-
+clc
 a_vec=[1,1]; %DH link lengths
 
 %first describe the environment obstacles as a collection of circles specified
@@ -101,6 +101,6 @@ ylabel('q2 (rad)')
 % display('displaying path incrementally; hit return to increment')
 % 
 % path is embedded in plot_path
-plot_path(path_start,path_end,a_vec)
+plot_path2(path_start,path_end,a_vec)
 % %plot_path_soln(path_start,path_end,a_vec)
 % 

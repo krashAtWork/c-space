@@ -1,14 +1,14 @@
 %this contains a non-viable path.  FIX ME!!
 
-function  plot_path (path_start,path_end,a_vec)
+function  plot_path2 (path_start,path_end,a_vec)
 
 %% code for continuous path, can be broken down into 3 parts
 via_1=[-pi;0];
-intmdt_pts = [ [1.958; pi],[1.958; -pi;],[1.5548; -2.242],[1.5548; -1.542]];
+intmdt_pts = [[2.358; 1.258], [1.958; pi],[1.958; -pi;],[1.5548; -2.242],[1.5548; -1.542]];
 wrap_12=[pi;0];
 part1 = [path_start, via_1];
-part2 = [wrap_12, intmdt_pts(:,1)];
-part3 = [intmdt_pts(:,2), intmdt_pts(:,3),intmdt_pts(:,4), path_end];
+part2 = [wrap_12, intmdt_pts(:,1),intmdt_pts(:,2) ];
+part3 = [intmdt_pts(:,3), intmdt_pts(:,4),intmdt_pts(:,5), path_end];
 dq_size = 0.1;
 [obstacle_ctr_pts,obstacle_radii] = get_environment_model;
 fignum=3;
@@ -63,30 +63,62 @@ pause
 end
   
 %% PART2 - SINGLE LINE
-dist2 = norm(wrap_12 - intmdt_pts(:,1));
-npts = round(dist2/dq_size);
+[dummy, imp] = size(part2);
+% imp = 2;
+% dist2 = zeros(1, imp);
+% npts2 = zeros(1, imp);
+% 
+ x =  part2(1,:)
+% % noise = randn(1,100)
+ y = part2(2,:)
+% 
+% constant = lsqcurvefit(@f, [0;-0.1], x, y);
+% 
+% m = constant(1)
+% c = constant(2)
+% 
+xfit = 0: 0.1 : 10
+disp("here")
+a =       129.1  ;
+b =      -5.517 ; 
+y  = a*x^b
+yfit = f(constant, xfit)
+% 
+% [imp] = size(xfit);
 
-for i=0:npts
-  figure(3)
-clf
-plot_circles(obstacle_ctr_pts,obstacle_radii,fignum)
-hold on
-axis([-3,3,-3,3])
-grid on
-axis('square')  
-  q_vec = wrap_12+(intmdt_pts(:,1)-wrap_12)*i/npts;
-  [arm_ctr_pts,arm_model_radii] = get_arm_collision_model(q_vec,a_vec);
-[payload_ctr_pts,payload_radii] = get_payload_collision_model(q_vec,a_vec);
+[fitresult, gof] = createFitpt2(x, y)
+%     plot(xfit, yfit,'g.','markersize',30)
 
-arm_ctr_pts=[arm_ctr_pts,payload_ctr_pts];
-arm_model_radii=[arm_model_radii,payload_radii];
-plot_circles(arm_ctr_pts,arm_model_radii,fignum)
- figure(2)
-  hold on
-
- plot(q_vec(1),q_vec(2),'k.',"markersize",30)
-pause
-end
+% for j= 1:(imp)
+% %     dist2(j) = norm(part2(:,j) - part2(:,j+1)); 
+% %     npts2(j) = round(dist2(j)/dq_size);
+% %     for i=0: npts2(j)
+%     figure(3)
+%     clf
+%     plot_circles(obstacle_ctr_pts,obstacle_radii,fignum)
+%     hold on
+%     axis([-3,3,-3,3])
+%     grid on
+%     axis('square')
+% %     q_vec = wrap_12+(intmdt_pts(:,1)-wrap_12)*i/npts;
+% %     q_vec = part2(:,j)+(part2(:,j+1)- part2(:,j))*i/npts2(j);
+%     q_vec = [xfit(j);yfit(j)]
+%     [arm_ctr_pts,arm_model_radii] = get_arm_collision_model(q_vec,a_vec);
+%     [payload_ctr_pts,payload_radii] = get_payload_collision_model(q_vec,a_vec);
+% 
+%     arm_ctr_pts=[arm_ctr_pts,payload_ctr_pts];
+%     arm_model_radii=[arm_model_radii,payload_radii];
+%     plot_circles(arm_ctr_pts,arm_model_radii,fignum)
+%     figure(2)
+%     hold on
+% 
+%     plot(q_vec(1),q_vec(2),'k.',"markersize",2)
+%     plot(xfit, yfit,'g.','markersize',30)
+%     pause
+%     
+% %     end
+%     
+% end
 
 %% PART3 - MULTIPLE LINES
 
